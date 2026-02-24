@@ -1,25 +1,27 @@
 dataDir: ~/.agent-orchestrator
 worktreeDir: ~/.worktrees
 port: 3000
+
 defaults:
   runtime: tmux
   agent: claude-code
   workspace: worktree
   notifiers:
     - desktop
+
 projects:
   yayin_botu:
     repo: panchwhils/yayin_botu
     path: /root/yayin_botu
     defaultBranch: main
     agentRules: |-
+      # Commit ve PR Kuralları
       Always run tests before pushing.
       Use conventional commits (feat:, fix:, chore:, docs:, refactor:, test:).
       Link issue numbers in commit messages.
       Write clear commit messages that explain WHY, not just WHAT.
 
-      Follow Python best practices:
-
+      # Python En İyi Uygulamaları
       - Use type hints for function parameters and return values
       - Follow PEP 8 style guide
       - Use f-strings for string formatting
@@ -27,6 +29,19 @@ projects:
       - Write docstrings for classes and functions
       - Prefer composition over inheritance
 
-      Before pushing, run these commands:
-      - black . (format code)
-      - mypy . (type checking)
+      # Kodu göndermeden önce çalıştırılacak komutlar
+      - black .        # Format code
+      - mypy .         # Type checking
+
+reactions:
+  ci-failed:
+    auto: true
+    action: send-to-agent
+    retries: 2
+  changes-requested:
+    auto: true
+    action: send-to-agent
+    escalateAfter: 30m
+  approved-and-green:
+    auto: false        # Otomatik merge için true yapabilirsin
+    action: notify
