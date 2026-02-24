@@ -9,7 +9,7 @@ defaults:
     - desktop
 projects:
   yayin_botu:
-    repo: panch/yayin_botu
+    repo: panchwhils/yayin_botu
     path: /root/yayin_botu
     defaultBranch: main
     agentRules: |-
